@@ -1,5 +1,5 @@
 # Roadmap
 
-- [ ] Server Supabase client + API operate on the bush_taxi schema (existing server credentials only)
-- [ ] Dashboard, members, payments, receipts read/write real bush_taxi tables
-- [ ] Replace sample member records with real client data (blocked: need the real records)
+- [x] Server database client + API run on the bush_taxi schema using existing server credentials
+- [x] Dashboard, members, search, member edit/save, payments and receipts verified against bush_taxi
+- [ ] Replace the sample member records with the real client list (blocked: awaiting the real data)
