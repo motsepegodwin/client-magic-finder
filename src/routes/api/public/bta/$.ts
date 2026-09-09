@@ -101,8 +101,8 @@ async function handle(request: Request, splat: string) {
 
     if (method === "POST") {
       const fields = memberFields(body);
-      if (!fields.surname) return fail("Surname is required");
-      if (!fields.member_number) {
+      if (!fields['surname']) return fail("Surname is required");
+      if (!fields['member_number']) {
         const { data: last } = await supabase
           .from("members")
           .select("member_number")
@@ -110,7 +110,7 @@ async function handle(request: Request, splat: string) {
           .order("member_number", { ascending: false })
           .limit(1);
         const lastNum = Number(String(last?.[0]?.member_number || "").replace(/\D/g, "")) || 0;
-        fields.member_number = "BTA-" + String(lastNum + 1).padStart(4, "0");
+        fields['member_number'] = "BTA-" + String(lastNum + 1).padStart(4, "0");
       }
       const { data, error } = await supabase
         .from("members")
@@ -188,8 +188,8 @@ async function handle(request: Request, splat: string) {
 
     if (method === "POST") {
       const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
-      const memberId = body.member_id ? String(body.member_id) : "";
-      const amount = Number(body.amount);
+      const memberId = body['member_id'] ? String(body['member_id']) : "";
+      const amount = Number(body['amount']);
       if (!memberId) return fail("Select a member first");
       if (!amount || amount <= 0) return fail("Enter a valid amount");
 
@@ -203,11 +203,11 @@ async function handle(request: Request, splat: string) {
       const payment = {
         member_id: memberId,
         amount,
-        payment_method: String(body.payment_method || "cash"),
-        payment_type: String(body.payment_type || "membership"),
-        reference_number: (body.reference_number as string) || null,
-        received_by: (body.received_by as string) || null,
-        notes: (body.notes as string) || null,
+        payment_method: String(body['payment_method'] || "cash"),
+        payment_type: String(body['payment_type'] || "membership"),
+        reference_number: (body['reference_number'] as string) || null,
+        received_by: (body['received_by'] as string) || null,
+        notes: (body['notes'] as string) || null,
       };
       const { data: savedPayment, error: paymentError } = await supabase
         .from("payments")
