@@ -33,6 +33,9 @@ function memberFields(body: Record<string, unknown>) {
     "address",
     "notes",
     "status",
+    "vehicle_registration",
+    "employment_duration",
+    "employment_start_date",
   ];
   const out: Record<string, unknown> = {};
   for (const key of allowed) {
