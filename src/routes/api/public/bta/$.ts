@@ -10,8 +10,8 @@ const fail = (message: string, status = 400) =>
   json({ success: false, error: message }, status);
 
 async function db() {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  return supabaseAdmin;
+  const { bushTaxiDb } = await import("@/integrations/bushtaxi/client.server");
+  return bushTaxiDb();
 }
 
 const MEMBER_SELECT = "*, routes(id, route_name, route_code)";
