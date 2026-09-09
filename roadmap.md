@@ -1,3 +1,5 @@
 # Roadmap
 
-- [ ] Replace sample members/payments with the real Bush Taxi client data (blocked: need the real records or access to the bush_taxi database)
+- [x] Server database client + API run on the bush_taxi schema using existing server credentials
+- [x] Dashboard, members, search, member edit/save, payments and receipts verified against bush_taxi
+- [ ] Replace the sample member records with the real client list (blocked: awaiting the real data)
