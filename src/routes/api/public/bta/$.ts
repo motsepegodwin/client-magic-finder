@@ -59,6 +59,10 @@ async function handle(request: Request, splat: string) {
       supabase.from("routes").select("id", { count: "exact", head: true }),
       supabase.from("payments").select("amount"),
     ]);
+
+    const firstError = [members, vehicles, routes, payments].find((r) => r.error)?.error;
+    if (firstError) return fail(firstError.message, 500);
+
     const total = (payments.data || []).reduce(
       (s: number, p: { amount: number | string }) => s + Number(p.amount || 0),
       0,
