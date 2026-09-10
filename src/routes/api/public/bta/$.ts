@@ -11,7 +11,7 @@ function errorText(err: unknown): string {
   if (typeof err === "string") return err;
   const e = err as Record<string, unknown>;
   const text = String(
-    e.message || e.hint || e.details || e.code || e.status || e.statusCode || JSON.stringify(err),
+    e["message"] || e["hint"] || e["details"] || e["code"] || e["status"] || e["statusCode"] || JSON.stringify(err),
   );
   if (!text || text === '{"message":""}') {
     return "Database connection failed. Please check the Supabase service-role key.";
