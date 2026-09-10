@@ -11,7 +11,7 @@ function errorText(err: unknown): string {
   if (typeof err === "string") return err;
   const e = err as Record<string, unknown>;
   return String(
-    e.message || e.hint || e.details || e.code || JSON.stringify(err),
+    e.message || e.hint || e.details || e.code || e.status || e.statusCode || JSON.stringify(err),
   );
 }
 
