@@ -6,8 +6,17 @@ const json = (body: unknown, status = 200) =>
     headers: { "Content-Type": "application/json" },
   });
 
+function errorText(err: unknown): string {
+  if (!err) return "Unknown error";
+  if (typeof err === "string") return err;
+  const e = err as Record<string, unknown>;
+  return String(
+    e.message || e.hint || e.details || e.code || JSON.stringify(err),
+  );
+}
+
 const fail = (message: string | Record<string, unknown>, status = 400) =>
-  json({ success: false, error: typeof message === "string" ? message : JSON.stringify(message) }, status);
+  json({ success: false, error: errorText(message) }, status);
 
 async function db() {
   const { bushTaxiDb } = await import("@/integrations/bushtaxi/client.server");
