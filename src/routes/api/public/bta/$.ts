@@ -10,9 +10,13 @@ function errorText(err: unknown): string {
   if (!err) return "Unknown error";
   if (typeof err === "string") return err;
   const e = err as Record<string, unknown>;
-  return String(
+  const text = String(
     e.message || e.hint || e.details || e.code || e.status || e.statusCode || JSON.stringify(err),
   );
+  if (!text || text === '{"message":""}') {
+    return "Database connection failed. Please check the Supabase service-role key.";
+  }
+  return text;
 }
 
 const fail = (message: string | Record<string, unknown>, status = 400) =>
