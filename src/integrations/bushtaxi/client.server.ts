@@ -30,15 +30,15 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 }
 
 function createBushTaxiClient(): SupabaseClient<any, 'bush_taxi', any> {
-  const url = process.env['SUPABASE_URL'];
-  const serviceRoleKey = process.env['SUPABASE_SERVICE_ROLE_KEY'];
+  const url = process.env['BUSH_TAXI_SUPABASE_URL'];
+  const serviceRoleKey = process.env['BUSH_TAXI_SUPABASE_SERVICE_ROLE_KEY'];
 
   if (!url || !serviceRoleKey) {
     const missing = [
-      ...(!url ? ['SUPABASE_URL'] : []),
-      ...(!serviceRoleKey ? ['SUPABASE_SERVICE_ROLE_KEY'] : []),
+      ...(!url ? ['BUSH_TAXI_SUPABASE_URL'] : []),
+      ...(!serviceRoleKey ? ['BUSH_TAXI_SUPABASE_SERVICE_ROLE_KEY'] : []),
     ];
-    throw new Error(`Missing server database configuration: ${missing.join(', ')}`);
+    throw new Error(`Missing Bush Taxi database configuration: ${missing.join(', ')}`);
   }
 
   return createClient(url, serviceRoleKey, {
