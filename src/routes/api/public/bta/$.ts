@@ -6,8 +6,21 @@ const json = (body: unknown, status = 200) =>
     headers: { "Content-Type": "application/json" },
   });
 
-const fail = (message: string, status = 400) =>
-  json({ success: false, error: message }, status);
+function errorText(err: unknown): string {
+  if (!err) return "Unknown error";
+  if (typeof err === "string") return err;
+  const e = err as Record<string, unknown>;
+  const text = String(
+    e["message"] || e["hint"] || e["details"] || e["code"] || e["status"] || e["statusCode"] || JSON.stringify(err),
+  );
+  if (!text || text === '{"message":""}') {
+    return "Database connection failed. Please check the Supabase service-role key.";
+  }
+  return text;
+}
+
+const fail = (message: string | Record<string, unknown>, status = 400) =>
+  json({ success: false, error: errorText(message) }, status);
 
 async function db() {
   const { bushTaxiDb } = await import("@/integrations/bushtaxi/client.server");
@@ -59,6 +72,10 @@ async function handle(request: Request, splat: string) {
       supabase.from("routes").select("id", { count: "exact", head: true }),
       supabase.from("payments").select("amount"),
     ]);
+
+    const firstError = [members, vehicles, routes, payments].find((r) => r.error)?.error;
+    if (firstError) return fail((firstError as unknown) as Record<string, unknown>, 500);
+
     const total = (payments.data || []).reduce(
       (s: number, p: { amount: number | string }) => s + Number(p.amount || 0),
       0,
