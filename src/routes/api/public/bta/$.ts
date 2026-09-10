@@ -6,8 +6,8 @@ const json = (body: unknown, status = 200) =>
     headers: { "Content-Type": "application/json" },
   });
 
-const fail = (message: string, status = 400) =>
-  json({ success: false, error: message }, status);
+const fail = (message: string | Record<string, unknown>, status = 400) =>
+  json({ success: false, error: typeof message === "string" ? message : JSON.stringify(message) }, status);
 
 async function db() {
   const { bushTaxiDb } = await import("@/integrations/bushtaxi/client.server");
